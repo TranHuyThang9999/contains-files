@@ -1,0 +1,6 @@
+{
+    "path_file":"http://127.0.0.1:8888/public/",
+    "server": {
+        "port": 8888
+    }
+}
