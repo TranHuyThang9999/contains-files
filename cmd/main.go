@@ -5,6 +5,7 @@ import (
 	"virtual/configs"
 	"virtual/controllers"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,11 +17,13 @@ func main() {
 	r := gin.Default()
 
 	uploadController := &controllers.UploadControllerResponse{}
-	r.Use(func(ctx *gin.Context) {
-		ctx.Header("Access-Control-Allow-Origin", "*")
-		ctx.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		ctx.Header("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-	})
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "OPTIONS", "PUT", "DELETE", "PATCH"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Accept", "Authorization"},
+		AllowCredentials: true,
+	}))
+
 	r.Use(gin.Logger())
 	r.POST("/upload", uploadController.Upload)
 	r.Static("/public", "./public")
